@@ -72,3 +72,13 @@ Learning Materials :
 - MinIo
 - ElasticSearch
 - Everything else on the above
+
+### Running client and server locally
+```
+client :
+npm run serve 
+
+server :
+F5
+```
+

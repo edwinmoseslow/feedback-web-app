@@ -1,12 +1,12 @@
-package com.feedbackapi.server;
+package com.feedbackapi.model;
 
-public class Feedback {
+public class FeedbackModel {
     private final long id;
     private final String title;
     private final String description;
     private final int rating;
 
-    public Feedback(long id, String title, String description, int rating) {
+    public FeedbackModel(long id, String title, String description, int rating) {
         this.id = id;
         this.title = title;
         this.description = description;

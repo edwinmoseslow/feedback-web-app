@@ -4,10 +4,6 @@
       <v-btn to="/feedbacks" text>
         Feedback
       </v-btn>
-
-      <!-- <v-btn to="/add" text>
-        Add Feedback
-      </v-btn> -->
     </v-app-bar>
 
     <v-main>

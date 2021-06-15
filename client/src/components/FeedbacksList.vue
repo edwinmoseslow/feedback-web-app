@@ -70,11 +70,6 @@ export default {
       ],
     };
   },
-  // watch: {
-  //   'feedbacks': {
-  //     retrieveFeedbacks()
-  //   }
-  // },
   methods: {
     async showAddFeedback() {
       if (await this.$refs.addFeedback.open()) {
@@ -91,21 +86,17 @@ export default {
     retrieveFeedbacks() {
       FeedbackDataService.getAll()
         .then((response) => {
-          this.feedbacks = response.data.map(this.getDisplayFeedback);
-          console.log(response.data);
+          this.feedbacks = response.data.map(this.getDisplayFeedback) ?? [];
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(() => {
+          this.feedbacks = [];
         });
-    },
-    refreshList() {
-      this.retrieveFeedbacks();
     },
     removeAllFeedbacks() {
       FeedbackDataService.deleteAll()
         .then((response) => {
           console.log(response.data);
-          this.refreshList();
+          this.retrieveFeedbacks();
         })
         .catch((e) => {
           console.log(e);
@@ -124,7 +115,7 @@ export default {
     deleteFeedback(id) {
       FeedbackDataService.delete(id)
         .then(() => {
-          this.refreshList();
+          this.retrieveFeedbacks();
         })
         .catch((e) => {
           console.log(e);

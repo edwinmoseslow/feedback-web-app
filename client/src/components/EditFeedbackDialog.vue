@@ -25,6 +25,7 @@
             required
           ></v-text-field>
 
+          <v-input v-model="currentFeedback.rating" :rules="[(v) => !!v || 'Rating must be at least 1 or more']">
           <v-rating
               v-model="currentFeedback.rating"
               hover
@@ -34,6 +35,7 @@
               color="black accent-4"
               label="Rating"
           ></v-rating>
+          </v-input>
         </v-form>
 
         <v-divider></v-divider>
@@ -47,13 +49,13 @@
           >
             update
           </v-btn>
-          <v-btn
+          <!-- <v-btn
             color="error"
             text
             @click.native="deleteFeedback"
           >
             delete
-          </v-btn>
+          </v-btn> -->
            <v-btn
             color="primary"
             text
@@ -92,7 +94,8 @@ export default {
         });
     },
     updateFeedback() {
-      FeedbackDataService.update(this.currentFeedback.id, this.currentFeedback)
+      if(this.currentFeedback.title !== "" && this.currentFeedback.description !== "" && this.currentFeedback.rating) {
+        FeedbackDataService.update(this.currentFeedback.id, this.currentFeedback)
         .then((response) => {
             console.log(response.data);
             this.resolve(true)
@@ -101,18 +104,19 @@ export default {
         .catch((e) => {
             console.log(e);
         });
+      }
     },
-    deleteFeedback() {
-      FeedbackDataService.delete(this.currentFeedback.id)
-        .then((response) => {
-            console.log(response.data);
-            this.resolve(true)
-            this.dialog = false
-        })
-        .catch((e) => {
-            console.log(e);
-        });
-    },
+    // deleteFeedback() {
+    //   FeedbackDataService.delete(this.currentFeedback.id)
+    //     .then((response) => {
+    //         console.log(response.data);
+    //         this.resolve(true)
+    //         this.dialog = false
+    //     })
+    //     .catch((e) => {
+    //         console.log(e);
+    //     });
+    // },
     open(feedbackId) {
         this.getFeedback(feedbackId)
         this.dialog = true

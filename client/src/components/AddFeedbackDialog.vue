@@ -78,26 +78,28 @@ import FeedbackDataService from "../services/FeedbackDataService";
     }),
     methods: {
       addFeedback() {
-        var data = {
-          title: this.feedback.title,
-          description: this.feedback.description,
-          rating: this.feedback.rating
-        };
+        if(this.feedback.title !== "" && this.feedback.description !== "" && this.feedback.rating) {
+          var data = {
+            title: this.feedback.title,
+            description: this.feedback.description,
+            rating: this.feedback.rating
+          };
 
-        FeedbackDataService.create(data)
-          .then((response) => {
-            this.feedback.id = response.data.id;
-            console.log(response.data);
-            this.submitted = true;
-            this.resolve(true)
-            this.dialog = false
-            this.feedback = {}
-          })
-          .catch((e) => {
-            console.log(e);
-            this.resolve(false)
-            this.dialog = false
-          });
+          FeedbackDataService.create(data)
+            .then((response) => {
+              this.feedback.id = response.data.id;
+              console.log(response.data);
+              this.submitted = true;
+              this.resolve(true)
+              this.dialog = false
+              this.setDefault()
+            })
+            .catch((e) => {
+              console.log(e);
+              this.resolve(false)
+              this.dialog = false
+            });
+        }
       },
       open() {
         this.dialog = true
@@ -109,7 +111,16 @@ import FeedbackDataService from "../services/FeedbackDataService";
       cancel() {
         this.resolve(false)
         this.dialog = false
-        this.feedback = {}
+        this.setDefault()
+      },
+      setDefault() {
+        this.feedback = {
+          id: null,
+          title: "",
+          description: "",
+          rating: 3,
+          published: false,
+        }
       }
     }
   }

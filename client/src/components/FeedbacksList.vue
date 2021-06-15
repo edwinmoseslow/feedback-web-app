@@ -10,11 +10,11 @@
       </v-btn>
     </v-col>
 
-    <!-- <v-col cols="12" md="4">
-      <v-btn small @click="showDiscardDialog=true">
-        Show Dialog
+    <v-col cols="12" md="4">
+      <v-btn small @click="showAddFeedback()">
+        Add Feeback
       </v-btn>
-    </v-col> -->
+    </v-col>
 
     <v-col cols="12" sm="12">
       <v-card class="mx-auto" tile>
@@ -27,12 +27,14 @@
           :hide-default-footer="true"
         >
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon small class="mr-2" @click="editFeedback(item.id)">mdi-pencil</v-icon>
+            <v-icon small class="mr-2" @click="showEditFeedback(item.id)">mdi-pencil</v-icon>
             <v-icon small @click="deleteFeedback(item.id)">mdi-delete</v-icon>
           </template>
         </v-data-table>
 
         <DiscardDialog ref="discard"/>
+        <AddFeedbackDialog ref="addFeedback"/>
+        <EditFeedbackDialog ref="editFeedback"/>
 
         <v-card-actions v-if="feedbacks.length > 0">
           <v-btn small color="error" @click="removeAllFeedbacks">
@@ -47,10 +49,14 @@
 <script>
 import FeedbackDataService from "../services/FeedbackDataService";
 import DiscardDialog from "../components/DiscardDialog.vue";
+import AddFeedbackDialog from "../components/AddFeedbackDialog.vue";
+import EditFeedbackDialog from "../components/EditFeedbackDialog.vue"
 export default {
   name: "feedbacks-list",
   components: {
-    DiscardDialog
+    DiscardDialog,
+    AddFeedbackDialog,
+    EditFeedbackDialog
   },
   data() {
     return {
@@ -62,10 +68,26 @@ export default {
         { text: "Rating", value: "rating", sortable: false },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      showDiscardDialog: false
     };
   },
+  // watch: {
+  //   'feedbacks': {
+  //     retrieveFeedbacks()
+  //   }
+  // },
   methods: {
+    async showAddFeedback() {
+      if (await this.$refs.addFeedback.open()) {
+        console.log("Feedback added")
+        this.retrieveFeedbacks();
+      }
+    },
+    async showEditFeedback(id) {
+      if (await this.$refs.editFeedback.open(id)) {
+        console.log("Feedback edited")
+        this.retrieveFeedbacks();
+      }
+    },
     retrieveFeedbacks() {
       FeedbackDataService.getAll()
         .then((response) => {
@@ -76,11 +98,9 @@ export default {
           console.log(e);
         });
     },
-
     refreshList() {
       this.retrieveFeedbacks();
     },
-
     removeAllFeedbacks() {
       FeedbackDataService.deleteAll()
         .then((response) => {
@@ -91,7 +111,6 @@ export default {
           console.log(e);
         });
     },
-
     searchTitle() {
       FeedbackDataService.findByTitle(this.title)
         .then((response) => {
@@ -102,11 +121,6 @@ export default {
           console.log(e);
         });
     },
-
-    editFeedback(id) {
-      this.$router.push({ name: "feedback-details", params: { id: id } });
-    },
-
     deleteFeedback(id) {
       FeedbackDataService.delete(id)
         .then(() => {
@@ -129,12 +143,12 @@ export default {
   mounted() {
     this.retrieveFeedbacks();
   },
-  async beforeRouteLeave(to, from, next) {
-    if (await this.$refs.discard.open()) {
-      // yes
-      next();
-    }
-  }
+  // async beforeRouteLeave(to, from, next) {
+  //   if (await this.$refs.discard.open()) {
+  //     // yes
+  //     next();
+  //   }
+  // }
 };
 </script>
 

@@ -5,9 +5,9 @@
         Feedback
       </v-btn>
 
-      <v-btn to="/add" text>
+      <!-- <v-btn to="/add" text>
         Add Feedback
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
 
     <v-main>

@@ -10,7 +10,7 @@
         </v-card-title>
 
         <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Discard Changes?
         </v-card-text>
 
         <v-divider></v-divider>
@@ -40,26 +40,26 @@
 <script>
   export default {
     data: () => ({
-    dialog: false,
-    resolve: null,
-    reject: null
-  }),
-  methods: {
-    open() {
-      this.dialog = true
-      return new Promise((resolve, reject) => {
-        this.resolve = resolve
-        this.reject = reject
-      })
-    },
-    agree() {
-      this.resolve(true)
-      this.dialog = false
-    },
-    cancel() {
-      this.resolve(false)
-      this.dialog = false
+      dialog: false,
+      resolve: null,
+      reject: null
+    }),
+    methods: {
+      open() {
+        this.dialog = true
+        return new Promise((resolve, reject) => {
+          this.resolve = resolve
+          this.reject = reject
+        })
+      },
+      agree() {
+        this.resolve(true)
+        this.dialog = false
+      },
+      cancel() {
+        this.resolve(false)
+        this.dialog = false
+      }
     }
-  }
   }
 </script>

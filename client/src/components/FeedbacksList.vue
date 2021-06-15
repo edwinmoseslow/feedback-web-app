@@ -10,6 +10,12 @@
       </v-btn>
     </v-col>
 
+    <!-- <v-col cols="12" md="4">
+      <v-btn small @click="showDiscardDialog=true">
+        Show Dialog
+      </v-btn>
+    </v-col> -->
+
     <v-col cols="12" sm="12">
       <v-card class="mx-auto" tile>
         <v-card-title>Feedbacks</v-card-title>
@@ -26,6 +32,8 @@
           </template>
         </v-data-table>
 
+        <DiscardDialog ref="discard"/>
+
         <v-card-actions v-if="feedbacks.length > 0">
           <v-btn small color="error" @click="removeAllFeedbacks">
             Remove All
@@ -38,8 +46,12 @@
 
 <script>
 import FeedbackDataService from "../services/FeedbackDataService";
+import DiscardDialog from "../components/DiscardDialog.vue";
 export default {
   name: "feedbacks-list",
+  components: {
+    DiscardDialog
+  },
   data() {
     return {
       feedbacks: [],
@@ -50,6 +62,7 @@ export default {
         { text: "Rating", value: "rating", sortable: false },
         { text: "Actions", value: "actions", sortable: false },
       ],
+      showDiscardDialog: false
     };
   },
   methods: {
@@ -116,6 +129,12 @@ export default {
   mounted() {
     this.retrieveFeedbacks();
   },
+  async beforeRouteLeave(to, from, next) {
+    if (await this.$refs.discard.open()) {
+      // yes
+      next();
+    }
+  }
 };
 </script>
 
